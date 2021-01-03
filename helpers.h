@@ -15,6 +15,22 @@ class WordFrequ
 		WordFrequ(std::string k,int l);
 		std::string word;
 		int frequency;
+		friend bool operator>(const WordFrequ& a, const WordFrequ& b) {
+         return (a.frequency>b.frequency);
+        }
+        friend bool operator>=(const WordFrequ& a, const WordFrequ& b) {
+         return (a.frequency>=b.frequency);
+        }
+        friend bool operator<(const WordFrequ& a, const WordFrequ& b) {
+         return (a.frequency<b.frequency);
+        }
+        friend bool operator<=(const WordFrequ& a, const WordFrequ& b) {
+         return (a.frequency<=b.frequency);
+        }
+        friend bool operator==(const WordFrequ& a, const WordFrequ& b) {
+         return (a.frequency==b.frequency&&(b.word.compare(a.word)==0));
+        }
+
 };
 
 class Dictionary{

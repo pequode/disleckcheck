@@ -54,38 +54,6 @@ Dictionary::Dictionary(string path){
   	cout<<"constructor done\n";
 }
 bool Dictionary::isFound(string inputword){
-	// fstream in(pathName);
-	// bool isInList = false;
-	// string levitate = "--";
-	// if(ifAlphebetical[0]==-1){
-	// 	for(int i =0;i<length;i++){
-	// 		getline(in, levitate);
-	// 		//cout<<"\t"<<levitate<<endl;
-	// 		if(levitate.compare(inputword)==0){
-	// 			isInList = true;
-	// 			break;
-	// 		}
-	// 	}
-	// }
-	// else{
-	// 	string a = inputword;
-	// 	transform(a.begin(), a.end(), a.begin(), ::tolower); 
-	// 	//cout<<"\n\tin alphebitzed list"<<endl;
-	// 	int index = int(a[0])-97;
-	// 	int startline = ifAlphebetical[index]; 
-	//  	for(int i =0;i<startline;i++){
-	// 		getline(in, levitate);
-	// 	}
-	//  	for(int i = startline+1; i<length;i++){
-	// 		getline(in, levitate);
-	// 		//cout<<"\t"<<levitate<<endl;
-	// 		if(levitate.compare(inputword)==0){
-	// 			isInList = true;
-	// 			break;
-	// 		}
-	// 	}
-	// }
-	// in.close();
 	return findIndex(inputword)>-1;
 }
 int Dictionary::findIndex(string inputword){

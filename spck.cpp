@@ -26,7 +26,7 @@ void SpellCheck::makeFrequencyList(string bigTextLoc){
 	for(int i =0;i<oxy.length;i++){
 		if(Freelist[i].frequency != -1){
 			freqList<<Freelist[i].word<<"-"<<Freelist[i].frequency<<"\n";
-			cout<<Freelist[i].word<<"-"<<Freelist[i].frequency<<"\n";
+			cout<<Freelist[i].word<<freqDelim<<Freelist[i].frequency<<"\n";
 		}
 	}
 	freqList.close();
@@ -106,27 +106,76 @@ vector<string> SpellCheck::getEdit1(string badWord){
 	return OKWords;
 }
 
-vector<WordFrequ> SpellCheck::makeFrequencyListInt(vector<string>){
+vector<WordFrequ> SpellCheck::makeFrequencyListInt(vector<string>a){
 	vector<WordFrequ> FreqList;
-	cout<< "check";
-	return FreqList;
+	fstream in(FrequencyListLoc);
+	string line;
+	while(getline(in, line)){
+		string Beg;
+		string fin;
+		string lyn = line;
+		int begind = lyn.find(freqDelim);
+		Beg = lyn.substr(0,begind);
+		fin = lyn.substr(begind+1);
+		int freqnum = stoi(fin); 
+		//cout<<line<<"\t"<<Beg<<" "<<fin<<"vs"<<freqnum<<endl;
+		WordFrequ temp(Beg,freqnum);
+		FreqList.push_back(temp);
+	}
+	in.close();
+	vector<WordFrequ> finalWF;
+	// could have done this step in the while loop
+	for(unsigned int i = 0; i< a.size();i++){
+		bool found = false; 
+		for(unsigned int k =0;k<FreqList.size();k++){
+			if (a[i].compare(FreqList[k].word)==0){
+				finalWF.push_back(FreqList[k]);
+				found = true;
+				cout<<"found\n"; 
+				break;
+			}
+		}
+		if (!found){
+			WordFrequ oneInstance(a[i],-1);
+			finalWF.push_back(oneInstance);
+			cout<<"notfound\n"; 
+		}
+	}
+	return finalWF;
+}
+
+vector<WordFrequ> SpellCheck::sortedList(string badWord){
+	vector<string> edits = getEdit1(badWord);
+	vector<WordFrequ> unstortedWordFrequ = makeFrequencyListInt(edits); 
+	vector<WordFrequ> sortedList = classicAlgs().MergeSortedlist<WordFrequ>(unstortedWordFrequ);
+	vector<WordFrequ>nonDuplicate;
+	for(unsigned int i = 0; i<sortedList.size();i++){
+		bool test = true; 
+		for(unsigned int k = 0;k<nonDuplicate.size();k++){
+			 if (sortedList[i]==nonDuplicate[k]){
+			 	test = false;
+			 	break;
+			 }
+		}
+		if(test){
+			nonDuplicate.push_back(sortedList[i]);
+		}
+
+	}
+	return nonDuplicate;
 }
 /*
 class SpellCheck{
 	public:
 		SpellCheck(string Dicpath,string textPath);
 		wordFrequ* makeFrequencyList();
-		string * getEdit1(string badWord);
 		string * getEdit2(string badWord);
 		string * possiblilities(string badWord);
 		float confidence(string word,dictionary Length);
 		string  correction(string badWord);
 	private:
-		wordFrequ * ccat; 
 		string DictionaryLocation;
 		string BigTextReferanceLocation; 
-		string * edit1;
-		string * edit2;
 }; 
 
 */

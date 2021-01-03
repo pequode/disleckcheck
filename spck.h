@@ -7,6 +7,7 @@
 #include <fstream>
 #include "spck.h"
 #include "helpers.h"
+#include "algs.h"
 // basic methods for spell checking taken from Peter Norvig
 // niave appoach to limit memory usage 
 
@@ -15,17 +16,17 @@ class SpellCheck{
 		SpellCheck(std::string Dicpath,std::string frequPath);
 		// string * checkList(string badWord);
 		void makeFrequencyList(std::string bigTextLoc);
-		std::vector<WordFrequ> makeFrequencyListInt(std::vector<std::string>);
+		std::vector<WordFrequ> makeFrequencyListInt(std::vector<std::string>a);
 		std::vector<std::string> getEdit1(std::string badWord);
 		// string * getEdit2(string badWord);
-		// string * possiblilities(string badWord);
 		// float confidence(string word,dictionary Length);
-		// string  correction(string badWord);
+		std::vector<WordFrequ> sortedList(std::string badWord);
 	private:
 		//wordFrequ * ccat;
 		Dictionary oxy; 
 		std::string DictionaryLocation;
-		std::string FrequencyListLoc; 
+		std::string FrequencyListLoc;
+		std::string freqDelim = "-";
 		// string * edit1;
 		// string * edit2;
 }; 
