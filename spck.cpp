@@ -50,7 +50,6 @@ vector<string> SpellCheck::getEdit1(string badWord){
 		if(i<strLength-1){
 			string a(1,newStringtrans[i]); 
 			string b(1,newStringtrans[i+1]); 
-			//cout<<a<<"\t"<<b<<endl;
 			newStringtrans.replace(i,1,b);
 			newStringtrans.replace(i+1,1,a);
 			transposes.push_back(newStringdel);
@@ -61,7 +60,6 @@ vector<string> SpellCheck::getEdit1(string badWord){
 			string insertletter(1,letters[k]);
 			newInsert.insert(i,insertletter);
 			insert.push_back(newInsert);
-			//cout<<newInsert<<" ";
 		}
 		//replacements
 		for(int k =0;k<26;k++){
@@ -69,18 +67,13 @@ vector<string> SpellCheck::getEdit1(string badWord){
 			string repletter(1,letters[k]);
 			newReplace.replace(i,1,repletter);
 			replace.push_back(newReplace);
-			//cout<<newReplace<<" ";
 		}
-		//cout<<"\n";
-		//cout<<newStringdel<<endl;
-		//cout<<newStringtrans<<endl;
 	}
 	for(int k =0;k<26;k++){
 			string newInsert = badWord;
 			string insertletter(1,letters[k]);
 			newInsert.insert(strLength,insertletter);
 			insert.push_back(newInsert);
-			//cout<<newInsert<<" ";
 	}
 	vector<string>OKWords;
 	for(unsigned int i = 0;i<deletions.size();i++){
@@ -118,7 +111,6 @@ vector<WordFrequ> SpellCheck::makeFrequencyListInt(vector<string>a){
 		Beg = lyn.substr(0,begind);
 		fin = lyn.substr(begind+1);
 		int freqnum = stoi(fin); 
-		//cout<<line<<"\t"<<Beg<<" "<<fin<<"vs"<<freqnum<<endl;
 		WordFrequ temp(Beg,freqnum);
 		FreqList.push_back(temp);
 	}
@@ -131,14 +123,12 @@ vector<WordFrequ> SpellCheck::makeFrequencyListInt(vector<string>a){
 			if (a[i].compare(FreqList[k].word)==0){
 				finalWF.push_back(FreqList[k]);
 				found = true;
-				cout<<"found\n"; 
 				break;
 			}
 		}
 		if (!found){
 			WordFrequ oneInstance(a[i],-1);
 			finalWF.push_back(oneInstance);
-			cout<<"notfound\n"; 
 		}
 	}
 	return finalWF;
@@ -164,18 +154,3 @@ vector<WordFrequ> SpellCheck::sortedList(string badWord){
 	}
 	return nonDuplicate;
 }
-/*
-class SpellCheck{
-	public:
-		SpellCheck(string Dicpath,string textPath);
-		wordFrequ* makeFrequencyList();
-		string * getEdit2(string badWord);
-		string * possiblilities(string badWord);
-		float confidence(string word,dictionary Length);
-		string  correction(string badWord);
-	private:
-		string DictionaryLocation;
-		string BigTextReferanceLocation; 
-}; 
-
-*/

@@ -39,19 +39,18 @@ Dictionary::Dictionary(string path){
     }
   	in.close();
   	if(!isAlpha){
-  		cout << "\tnot alphebetically\n";
   		for(int i = 0; i< 26;i++){
   			ifAlphebetical[i] = -1;
-  			//cout << ifAlphebetical[i]<<endl;
   		}
-  	}else{
-  		cout <<"\talphebetically\n";
-  		/*for(int i = 0; i< 26;i++){
-  			cout << ifAlphebetical[i]<<endl;
-  		}*/
   	}
+  	//else{
+  	// 	//cout <<"\talphebetically\n";
+  	// 	for(int i = 0; i< 26;i++){
+  	// 		cout << ifAlphebetical[i]<<endl;
+  	// 	}
+  	// }
   	length = count; 
-  	cout<<"constructor done\n";
+  	
 }
 bool Dictionary::isFound(string inputword){
 	return findIndex(inputword)>-1;

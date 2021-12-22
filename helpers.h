@@ -48,3 +48,6 @@ class Dictionary{
 };
 
 #endif
+wonder woman 
+pro life earings 
+lamp for julia
