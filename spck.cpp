@@ -10,7 +10,7 @@ SpellCheck::SpellCheck(string Dicpath,string frequPath){
 void SpellCheck::makeFrequencyList(string bigTextLoc){
 	fstream in(bigTextLoc);
 	WordFrequ Freelist[oxy.length];
-	string line; 
+	string line;
 	while(getline(in, line,' ')){
 		int foundHere = oxy.findIndex(line);
 		cout<<line<<"-";
@@ -37,7 +37,7 @@ vector<string> SpellCheck::getEdit1(string badWord){
 	vector<string> deletions;
 	vector<string> transposes;
 	vector<string> replace;
-	vector<string> insert;  
+	vector<string> insert;
 	for(int i = 0; i<strLength;i++){
 		//deletions
 		string newStringdel = badWord;
@@ -45,16 +45,16 @@ vector<string> SpellCheck::getEdit1(string badWord){
 		string newStringinsert = badWord;
 		newStringdel.replace(i,1,"");
 		deletions.push_back(newStringdel);
-		//transpositions 
+		//transpositions
 		//each letter before
 		if(i<strLength-1){
-			string a(1,newStringtrans[i]); 
-			string b(1,newStringtrans[i+1]); 
+			string a(1,newStringtrans[i]);
+			string b(1,newStringtrans[i+1]);
 			newStringtrans.replace(i,1,b);
 			newStringtrans.replace(i+1,1,a);
 			transposes.push_back(newStringdel);
 		}
-		//instertions 
+		//instertions
 		for(int k =0;k<26;k++){
 			string newInsert = badWord;
 			string insertletter(1,letters[k]);
@@ -110,7 +110,7 @@ vector<WordFrequ> SpellCheck::makeFrequencyListInt(vector<string>a){
 		int begind = lyn.find(freqDelim);
 		Beg = lyn.substr(0,begind);
 		fin = lyn.substr(begind+1);
-		int freqnum = stoi(fin); 
+		int freqnum = stoi(fin);
 		WordFrequ temp(Beg,freqnum);
 		FreqList.push_back(temp);
 	}
@@ -118,7 +118,7 @@ vector<WordFrequ> SpellCheck::makeFrequencyListInt(vector<string>a){
 	vector<WordFrequ> finalWF;
 	// could have done this step in the while loop
 	for(unsigned int i = 0; i< a.size();i++){
-		bool found = false; 
+		bool found = false;
 		for(unsigned int k =0;k<FreqList.size();k++){
 			if (a[i].compare(FreqList[k].word)==0){
 				finalWF.push_back(FreqList[k]);
@@ -136,11 +136,11 @@ vector<WordFrequ> SpellCheck::makeFrequencyListInt(vector<string>a){
 
 vector<WordFrequ> SpellCheck::sortedList(string badWord){
 	vector<string> edits = getEdit1(badWord);
-	vector<WordFrequ> unstortedWordFrequ = makeFrequencyListInt(edits); 
-	vector<WordFrequ> sortedList = classicAlgs().MergeSortedlist<WordFrequ>(unstortedWordFrequ);
+	vector<WordFrequ> unstortedWordFrequ = makeFrequencyListInt(edits);
+	vector<WordFrequ> sortedList = classicAlgs().MergeSortedlist<WordFrequ>(unstortedWordFrequ);// merge sort uses too much memory because it is recursive 
 	vector<WordFrequ>nonDuplicate;
 	for(unsigned int i = 0; i<sortedList.size();i++){
-		bool test = true; 
+		bool test = true;
 		for(unsigned int k = 0;k<nonDuplicate.size();k++){
 			 if (sortedList[i]==nonDuplicate[k]){
 			 	test = false;

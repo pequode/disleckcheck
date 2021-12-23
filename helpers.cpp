@@ -1,7 +1,7 @@
 #include "helpers.h"
 using namespace std;
 // basic methods for spell checking taken from Peter Norvig
-// niave appoach to limit memory usage 
+// niave appoach to limit memory usage
 
 WordFrequ::WordFrequ(string p,int freq){
 	word = p;
@@ -19,13 +19,13 @@ Dictionary::Dictionary(string path){
 	fstream in(path);
 	string line = "--";
 	string Last ="--";
-	bool isAlpha = true; 
-  	
+	bool isAlpha = true;
+
  	int count = 0,j=0;
  	ifAlphebetical[j] = 0;
  	j++;
   	while(getline(in, line)){ //read data from file object and put it into string.
-        
+
         int strcmp = Last[0]-line[0];
         if(strcmp >0 && count>0){
         	isAlpha = false;
@@ -49,8 +49,8 @@ Dictionary::Dictionary(string path){
   	// 		cout << ifAlphebetical[i]<<endl;
   	// 	}
   	// }
-  	length = count; 
-  	
+  	length = count;
+
 }
 bool Dictionary::isFound(string inputword){
 	return findIndex(inputword)>-1;
@@ -58,7 +58,7 @@ bool Dictionary::isFound(string inputword){
 int Dictionary::findIndex(string inputword){
 	fstream in(pathName);
 	string levitate = "--";
-	int indexSearch = -1; 
+	int indexSearch = -1;
 	if(ifAlphebetical[0]==-1){
 		for(int i =0;i<length;i++){
 			getline(in, levitate);
@@ -70,9 +70,9 @@ int Dictionary::findIndex(string inputword){
 	}
 	else{
 		string a = inputword;
-		transform(a.begin(), a.end(), a.begin(), ::tolower); 
+		transform(a.begin(), a.end(), a.begin(), ::tolower);
 		int index = int(a[0])-97;
-		int startline = ifAlphebetical[index]; 
+		int startline = ifAlphebetical[index];
 	 	for(int i =0;i<startline;i++){
 			getline(in, levitate);
 		}
@@ -85,7 +85,7 @@ int Dictionary::findIndex(string inputword){
 		}
 	}
 	in.close();
-	return indexSearch; 
+	return indexSearch;
 }
 int Dictionary::getStartIndex(string word){
 	if(ifAlphebetical[0]==-1){
@@ -93,9 +93,23 @@ int Dictionary::getStartIndex(string word){
 	}
 	else{
 		string a = word;
-		transform(a.begin(), a.end(), a.begin(), ::tolower); 
+		transform(a.begin(), a.end(), a.begin(), ::tolower);
 		int index = int(a[0])-97;
-		int startline = ifAlphebetical[index]; 
+		int startline = ifAlphebetical[index];
 		return startline+1;
-	} 
+	}
 }
+
+Comment::Comment(){
+	throw "ERROR::please enter a char for comments\n";
+}// no args constructor
+Comment::Comment(std::string singleLine){
+	sgln=singleLine;
+	hasMulti=false;
+}//singleLineConstructor
+Comment::Comment(std::string singleLine, std::string multiLine1, std::string multiLine2){
+	sgln=singleLine;
+	ml1=multiLine1;
+	ml2=multiLine2;
+	hasMulti=true;
+}// double arg constructor
