@@ -15,9 +15,9 @@ void printMenu(string word, string comment,vector<WordFrequ> Guesses){
 	for(unsigned int i = 0; i<Guesses.size();i++){
 		cout << Guesses[i].word<<"\t"<<i<<"||\t";
 	}
-
 	cout << "other\t"<< Guesses.size()<<endl;
 }// functio outputs to the screen
+
 vector<string>  getword(string line){// function parses for user
 	string word = "";
 	string rest = "";
@@ -45,19 +45,19 @@ vector<string>  getword(string line){// function parses for user
 	lineout.push_back(rest);
 	return lineout;
 }
+
 string spellCheckStep(string word,Dictionary oxy,	SpellCheck dislexia,string fullL){
 	string wordout = word;
-	cout<<"word not found function"<<endl;
 	// if word is not in Dictionary and the word is not of size 0
 	if(!oxy.isFound(word)&&word.size()>0){
 		// create a list of possibilities for the words
-		cout<<"word not found"<<endl;
 		vector<WordFrequ> possibilities = dislexia.sortedList(word);
-		cout<<possibilities.size()<<endl;
-		int selection = 0;
-		printMenu(word, fullL ,possibilities);
-		//user input
-		//cin >> selection;
+		int selection = 10;
+		if(possibilities.size()>0){// verifys that a possibility was found
+			printMenu(word, fullL ,possibilities);
+			//user input
+			//cin >> selection;
+		}
 		// if user selected one of the possibilities
 		if(selection < int(possibilities.size()+1) && selection >= 0){// checks for the user input
 			// outputs a the selected correction
@@ -67,18 +67,10 @@ string spellCheckStep(string word,Dictionary oxy,	SpellCheck dislexia,string ful
 					cout<<"Correction: ";
 					cin>>newOption;
 					wordout = newOption;
-				}
-			// if picked from a list
-			else wordout = possibilities[selection].word;
+				 }// if picked from a list
+			   else wordout = possibilities[selection].word;
 		}
-		// do not make a change to the word
-		else{
-			wordout = word;
-		}
-
 	// if word in Dictionary
-	}else{
-			wordout = word;
 	}
 	return wordout;
 }
@@ -98,8 +90,9 @@ string correctedComment(string line,int commentStart, string dicListP,string fre
 	// goes until rest not found
 	while(words[1].size()>0 && c <20 ){
 		c++;
-		cout<<words[0]<<endl;
-		correctedLine= correctedLine + " "+ spellCheckStep(words[0],oxy,dislexia,fullL);
+		cout<<words[0]<<"<-- word || rest = "endl;
+		string correctedWord = spellCheckStep(words[0],oxy,dislexia,fullL)
+		correctedLine= correctedLine + " "+ correctedWord;
 		words = getword(words[1]);
 	}
 	// add back in the comment to the line
