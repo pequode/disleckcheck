@@ -14,7 +14,8 @@ class WordFrequ
 		WordFrequ();
 		WordFrequ(std::string k,int l);
 		std::string word;
-		int frequency;
+		int frequency;// can make a much smaller var
+		// used to sort WordFrequ obj with alg class.
 		friend bool operator>(const WordFrequ& a, const WordFrequ& b) {
          return (a.frequency>b.frequency);
         }
@@ -38,9 +39,9 @@ class Dictionary{
 		Dictionary();
 		Dictionary(std::string path);// set path name veriable and check to see if its alphebetically, if yes then run find starts lines
 		// else populate with garbage -1
-		int getStartIndex(std::string word);
+		int getStartIndex(std::string word);//
 		bool isFound(std::string inputword); // returns 1 on success and 0 on fail
-		int findIndex(std::string inputword);
+		int findIndex(std::string inputword);//
 		int length;
 	private:
 		std::string pathName;
@@ -56,7 +57,7 @@ class Comment{
 		std::string sgln;
 		std::string ml1;
 		std::string ml2;
-		bool hasMulti; 
+		bool hasMulti;
 };
 
 #endif

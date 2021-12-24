@@ -1,12 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <iostream>
-//#include "cmtChckr.h"
+
 #include "helpers.h"
 #include "spck.h"
 using namespace std;
-Comment cpp("//","/*","*/");// defines cpp comments structure
-Comment python("#","\"\"\"","\"\"\"");//defines comments for python
+int DEBUG = 0;
+
 void printMenu(string word, string comment,vector<WordFrequ> Guesses){
 	// let user know the word wasnt recognized
 	cout<<"\"" <<word<<"\""<<" was not recognized in: \""<<comment<<"\"\n";
@@ -18,6 +18,7 @@ void printMenu(string word, string comment,vector<WordFrequ> Guesses){
 
 	cout << "other\t"<< Guesses.size()<<endl;
 }// functio outputs to the screen
+
 vector<string>  getword(string line){// function parses for user
 	string word = "";
 	string rest = "";
@@ -45,19 +46,21 @@ vector<string>  getword(string line){// function parses for user
 	lineout.push_back(rest);
 	return lineout;
 }
-string spellCheckStep(string word,Dictionary oxy,	SpellCheck dislexia,string fullL){
+
+string spellCheckStep(string word,string fullL){
+	SpellCheck dislexia("dicList.txt","freqList.txt");
+	Dictionary oxy("dicList.txt");
+
 	string wordout = word;
-	cout<<"word not found function"<<endl;
 	// if word is not in Dictionary and the word is not of size 0
 	if(!oxy.isFound(word)&&word.size()>0){
 		// create a list of possibilities for the words
-		cout<<"word not found"<<endl;
 		vector<WordFrequ> possibilities = dislexia.sortedList(word);
-		cout<<possibilities.size()<<endl;
+		if(DEBUG)cout<<"number of choices:"<<possibilities.size()<<endl;
 		int selection = 0;
 		printMenu(word, fullL ,possibilities);
 		//user input
-		//cin >> selection;
+		cin >> selection;
 		// if user selected one of the possibilities
 		if(selection < int(possibilities.size()+1) && selection >= 0){// checks for the user input
 			// outputs a the selected correction
@@ -68,88 +71,33 @@ string spellCheckStep(string word,Dictionary oxy,	SpellCheck dislexia,string ful
 					cin>>newOption;
 					wordout = newOption;
 				}
-			// if picked from a list
-			else wordout = possibilities[selection].word;
+				// if picked from a list
+				else wordout = possibilities[selection].word;
 		}
-		// do not make a change to the word
-		else{
-			wordout = word;
-		}
-
-	// if word in Dictionary
-	}else{
-			wordout = word;
 	}
 	return wordout;
 }
-string correctedComment(string line,int commentStart, string dicListP,string freqListP){
+string correct(string line){
 	string fullL = line;
-	// creates a spell check obj from spk file
-	SpellCheck dislexia(dicListP,freqListP);
-	// creates a Dictionary object from the defined file, dic obj defined in helpers
-	Dictionary oxy(dicListP);
-
-	int sizeOfComment = cpp.sgln.size();
-	string rest = fullL.substr(commentStart+sizeOfComment);//gets the comments without the comment char
-
-	vector<string> words = getword(rest);
+	vector<string> words = getword(fullL);
 	string correctedLine="";
-	int c = 0;
-	// goes until rest not found
-	while(words[1].size()>0 && c <20 ){
-		c++;
-		cout<<words[0]<<endl;
-		correctedLine= correctedLine + " "+ spellCheckStep(words[0],oxy,dislexia,fullL);
+	// goes through all words
+	while(words[1].size()>0){
+		if(DEBUG)cout<<words[0]<<endl;
+		correctedLine= correctedLine + " "+ spellCheckStep(words[0],fullL);
 		words = getword(words[1]);
 	}
-	// add back in the comment to the line
-	// correctedLine= correctedLine + " "+ spellCheckStep(words[0],oxy,dislexia,fullL);
-	string goodline = fullL.substr(0,commentStart+sizeOfComment);
-	correctedLine = goodline+correctedLine;
-	cout<<correctedLine<<endl;
+	correctedLine= correctedLine + " "+ spellCheckStep(words[0],fullL);
 	return correctedLine;
 }
-void checkFile(string fileToPath){
-	// reads all of the file to be debuged in from the inpath
-	string line;
-	fstream in(fileToPath);
-	string fullFile;
 
-	int count =0;// emergency stop for debug purposes
-	while(getline(in, line) && count < 100){
-		// finds comments
-		count+=1;
-		int commentStart = line.find(cpp.sgln);
-		int escapeChar = line.find('\\');
-		cout<<commentStart<<" <-commentstart||Line-> "<<count<<"\n";
-		string correctedline = "";
-		if(commentStart>-1 && escapeChar==-1){// if it has a comment
-			cout<<"checking spelling\n";
-			correctedline =correctedComment(line,commentStart,"dicList.txt" ,"freqList.txt");
-		}else{//if it doesnt have a comment
-			correctedline = line;
-			cout<<"not checking spelling\n";
-		}
-		fullFile = fullFile+correctedline+"\n";
-	}
-	//write changes to file
-	cout<< fullFile;
-	in.close();
-
-	// ofstream rewriteFile;
-	// rewriteFile.open(fileToPath+"edit");
-	// rewriteFile<<fullFile;
-	// rewriteFile.close();
-	// //cout<<fullFile<<endl;
-	// cout<<"\n\nend\n";
-}
 // main runner
 int main(){
 	cout<< "here\n";
-	// checkFile("helpers.cpp");
-
-
-	checkFile("testComments.h");
+	string misspelling = "th quock brwon fxo jmps ovr the lzay dog";
+	cout<<"the misspelling is : "<<misspelling<<endl;
+	string fixed_string = correct(misspelling);
+	cout<<"the misspelling is : "<<fixed_string<<endl;
 	cout<< "Done!!!!\n";
 	return 0;
 }
